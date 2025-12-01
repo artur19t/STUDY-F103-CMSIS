@@ -6,4 +6,7 @@ void USART1_Init(void)
   USART1-> BRR = 0x1D4C;
   USART1-> CR1 |= USART_CR1_UE | USART_CR1_TE | 
   USART_CR1_RE | USART_CR1_RXNEIE;
+  
+  NVIC_EnableIRQ(USART1_IRQn);
+  
 }
