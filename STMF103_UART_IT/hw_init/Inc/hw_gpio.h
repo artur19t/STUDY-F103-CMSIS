@@ -4,4 +4,5 @@
 #include "stm32f10x.h"                  // Device header
 
 void GPIO_USART1_Init(void);
+void GPIO_LED_Init(void);
 #endif

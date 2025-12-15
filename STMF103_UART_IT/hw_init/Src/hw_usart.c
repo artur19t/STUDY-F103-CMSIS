@@ -8,5 +8,5 @@ void USART1_Init(void)
   USART_CR1_RE | USART_CR1_RXNEIE;
   
   NVIC_EnableIRQ(USART1_IRQn);
-  
+  __enable_irq();
 }
