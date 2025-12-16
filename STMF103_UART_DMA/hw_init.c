@@ -1,0 +1,33 @@
+#include "hw_init.h"
+
+// --- GPIO for USART1 Init ---
+void GPIO_USART_UsrInit (void)
+{
+  RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
+  // --- USART1_TX, PA9 ---
+  GPIOA->CRH &= ~GPIO_CRH_CNF9;
+  GPIOA->CRH |= GPIO_CRH_CNF9_1;
+  GPIOA->CRH |= GPIO_CRH_MODE9;
+  // --- USART1_RX, PA10 ---
+  GPIOA->CRH &= ~GPIO_CRH_CNF10;
+  GPIOA->CRH |= GPIO_CRH_CNF10_1;
+  GPIOA->CRH |= GPIO_CRH_MODE10;
+}
+
+// --- GPIO LED PB2 ---
+void GPIO_LED_UsrInit (void)
+{
+  RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
+  
+  GPIOB->CRL &= ~GPIO_CRL_CNF2;
+  GPIOB->CRL &= ~GPIO_CRL_MODE2;
+  GPIOB->CRL |= GPIO_CRL_MODE2_1;
+}
+
+// --- USART1 Init ---
+void USART1_UsrInit (void)
+{
+  RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
+  USART1->BRR = (39 << 4) | 1;
+  USART1->CR1 |= USART_CR1_UE | USART_CR1_TE | USART_CR1_RE;
+}
