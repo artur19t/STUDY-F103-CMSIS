@@ -46,12 +46,8 @@ void process_command(void)
       return;
     }
   }
-  char f_ans[] = {'F', 'A', 'L', 'S', 'E'};
-  for (size_t i = 0; i < 5; i++)
-  {
-    USART1->DR = f_ans[i];
-    while(!(USART1->SR & USART_SR_TXE));
-  }
+  uint8_t f_ans[] = {"FALSE"};
+  USART_UstTranslate(f_ans, 5);
 }
 void cmd_led_on(void)
 {
@@ -65,4 +61,9 @@ void cmd_led_off(void)
 
 void cmd_retranslate(void)
 {
+}
+
+void USART_UstTranslate(uint8_t *tx_buf, uint16_t dSize)
+{
+  DMA1_USART1TX_UsrConfig(tx_buf, dSize);
 }

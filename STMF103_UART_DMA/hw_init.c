@@ -41,22 +41,42 @@ void DMA1_UsrInit (void)
 {
   RCC->AHBENR |= RCC_AHBENR_DMA1EN;
   // --- DMA RX UART1 ---
-  DMA1_Channel5->CCR |= DMA_CCR5_TEIE | DMA_CCR5_TCIE | DMA_CCR5_HTIE;
+  DMA1_Channel5->CCR &= ~(DMA_CCR5_TEIE | DMA_CCR5_TCIE | DMA_CCR5_HTIE);
   DMA1_Channel5->CCR &= ~DMA_CCR5_DIR;
-  DMA1_Channel5->CCR |= DMA_CCR5_CIRC;
+  DMA1_Channel5->CCR &= ~DMA_CCR5_CIRC;
   DMA1_Channel5->CCR &= ~DMA_CCR5_PINC;
   DMA1_Channel5->CCR |= DMA_CCR5_MINC;
   DMA1_Channel5->CCR &= ~DMA_CCR5_MSIZE;
   DMA1_Channel5->CCR &= ~DMA_CCR5_PSIZE;
   DMA1_Channel5->CCR &= ~DMA_CCR5_PL;
+  DMA1_Channel5->CCR |= DMA_CCR5_PL_0;
+  // --- DMA TX UART1 ---
+  DMA1_Channel4->CCR &= ~(DMA_CCR4_TEIE | DMA_CCR4_TCIE | DMA_CCR4_HTIE);
+  DMA1_Channel4->CCR |= DMA_CCR4_DIR;
+  DMA1_Channel4->CCR &= ~DMA_CCR4_CIRC;
+  DMA1_Channel4->CCR &= ~DMA_CCR4_PINC;
+  DMA1_Channel4->CCR |= DMA_CCR4_MINC;
+  DMA1_Channel4->CCR &= ~DMA_CCR4_MSIZE;
+  DMA1_Channel4->CCR &= ~DMA_CCR4_PSIZE;
+  DMA1_Channel4->CCR &= ~DMA_CCR4_PL;
 }
 
-// --- DMA User Config ---
-void DMA1_UsrConfig(volatile uint16_t *srcAddr, uint8_t *destAddr, uint16_t dSize)
+// --- DMA1 Ch5 USART2 RX User Config ---
+void DMA1RX_UsrConfig(volatile uint16_t *srcAddr, uint8_t *destAddr, uint16_t dSize)
 {
-  DMA1_Channel5->CCR &= ~DMA_CCR1_EN;
+  DMA1_Channel5->CCR &= ~DMA_CCR5_EN;
   DMA1_Channel5->CNDTR = dSize;
   DMA1_Channel5->CPAR = (uint32_t)srcAddr;
   DMA1_Channel5->CMAR = (uint32_t)destAddr;
-  DMA1_Channel5->CCR |= DMA_CCR1_EN;
+  DMA1_Channel5->CCR |= DMA_CCR5_EN;
+}
+
+// --- DMA1 Ch4 USART1 TX User Config ---
+void DMA1_USART1TX_UsrConfig(uint8_t *srcAddr, uint16_t dSize)
+{
+  DMA1_Channel4->CCR &= ~DMA_CCR4_EN;
+  DMA1_Channel4->CNDTR = dSize;
+  DMA1_Channel4->CPAR = (uint32_t)&USART1->DR;
+  DMA1_Channel4->CMAR = (uint32_t)srcAddr;
+  DMA1_Channel4->CCR |= DMA_CCR4_EN;
 }

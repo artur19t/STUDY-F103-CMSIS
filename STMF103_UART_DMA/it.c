@@ -6,9 +6,8 @@ void USART1_IRQHandler(void)
 {
   if(USART1->SR & USART_SR_IDLE)
   {
-    volatile uint32_t tmp;
-    tmp = USART1->SR;
-    tmp = USART1->DR;
+    (void)USART1->SR;
+    (void)USART1->DR;
     uint16_t received = RX_SIZE - DMA1_Channel5->CNDTR;
     USART_UsrLogic(RxBuf, received);
     
